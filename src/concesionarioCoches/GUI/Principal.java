@@ -158,6 +158,7 @@ public class Principal extends JFrame {
 		setJMenuBar(menuBar);
 
 		mnArchivo = new JMenu("Archivo");
+		mnArchivo.setMnemonic('A');
 		mnArchivo.setIcon(new ImageIcon(Principal.class.getResource("/img/ficheros-menu.png")));
 		menuBar.add(mnArchivo);
 
@@ -205,6 +206,7 @@ public class Principal extends JFrame {
 		mnArchivo.add(mntmSalir);
 
 		mnConcesionario = new JMenu("Concesionario");
+		mnConcesionario.setMnemonic('C');
 		mnConcesionario.setIcon(new ImageIcon(Principal.class.getResource("/img/concesionario-menu.png")));
 		menuBar.add(mnConcesionario);
 
@@ -248,6 +250,7 @@ public class Principal extends JFrame {
 		mnConcesionario.add(mntmContarCoches);
 
 		JMenu mnMostrar = new JMenu("Mostrar");
+		mnMostrar.setMnemonic('M');
 		mnMostrar.setIcon(new ImageIcon(Principal.class.getResource("/img/mostrar-menu.png")));
 		menuBar.add(mnMostrar);
 
@@ -294,6 +297,7 @@ public class Principal extends JFrame {
 		mnMostrar.add(mntmMostrarCochesPorColor);
 
 		JMenu mnAyuda = new JMenu("Ayuda");
+		mnAyuda.setMnemonic('y');
 		mnAyuda.setIcon(new ImageIcon(Principal.class.getResource("/img/ayuda-menu.png")));
 		menuBar.add(mnAyuda);
 

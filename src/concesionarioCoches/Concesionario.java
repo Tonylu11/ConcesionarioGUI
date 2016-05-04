@@ -26,10 +26,6 @@ public class Concesionario implements Serializable {
 	 * Almacén de los coches del concesionario
 	 */
 	public ArrayList<Coche> almacen = new ArrayList<Coche>();
-	/**
-	 * Nombre del concesionario
-	 */
-	private final String nombre = "IES Gran Capitán";
 
 	/**
 	 * Añade un coche al concesinario
@@ -53,14 +49,12 @@ public class Concesionario implements Serializable {
 		Coche coche = new Coche(matricula, color, modelo);
 		if (almacen.contains(coche))
 			throw new CocheYaExisteException("El coche ya existe en el concesionario. ");
-		Gestion.setModificado(true);
 		return almacen.add(coche);
 	}
 
 	public boolean eliminar(String matricula) throws MatriculaNoValidaException, CocheNoExisteException {
 		Coche coche = new Coche(matricula);
 		if (almacen.contains(coche)) {
-			Gestion.setModificado(true);
 			return almacen.remove(coche);
 		} else
 			throw new CocheNoExisteException("El coche no existe");
@@ -107,11 +101,6 @@ public class Concesionario implements Serializable {
 
 	}
 
-	@Override
-	public String toString() {
-		return "Concesionario " + nombre + "[almacen=" + almacen + "]";
-	}
-
 	public ArrayList<Coche> getCochesColor(Colores color) {
 		ArrayList<Coche> arrCochesColor = new ArrayList<Coche>();
 		for (Coche coche : almacen) {
@@ -120,5 +109,4 @@ public class Concesionario implements Serializable {
 		}
 		return arrCochesColor;
 	}
-
 }
