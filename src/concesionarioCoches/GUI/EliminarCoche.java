@@ -8,6 +8,8 @@ import concesionarioCoches.excepciones.MatriculaNoValidaException;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 /**
  * Elimina un coche por su matr&iacute;cula.
@@ -23,23 +25,32 @@ public class EliminarCoche extends VentanaPadre {
 	 * Create the dialog.
 	 */
 	public EliminarCoche() {
-		setTitle("Eliminar coche");
-		marcaComboBox.setSelectedIndex(-1);
-		btnLimpiar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mostrarCoche();
+		matriculaTxtField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				try {
+					mostrarCoche(Gestion.concesionario.get(matriculaTxtField.getText()));
+				} catch (MatriculaNoValidaException e1) {
+					JOptionPane.showMessageDialog(getContentPane(), "La matrícula no es válida..", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} catch (CocheNoExisteException e1) {
+					JOptionPane.showMessageDialog(getContentPane(), "El coche no existe..", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
+		setTitle("Eliminar coche");
+		marcaComboBox.setSelectedIndex(-1);
+		button3.setVisible(false);
 		plataRButton.setEnabled(false);
 		rojoRButton.setEnabled(false);
 		azulRButton.setEnabled(false);
 		modeloComboBox.setEnabled(false);
 		marcaComboBox.setEnabled(false);
-		botonAnterior.setVisible(false);
-		botonSiguiente.setVisible(false);
-		okButton.setText("Eliminar");
-		btnLimpiar.setText("Mostrar");
-		okButton.addActionListener(new ActionListener() {
+		button1.setVisible(false);
+		button2.setVisible(false);
+		button5.setText("Eliminar");
+		button5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				eliminarCoche();
 			}
@@ -47,42 +58,18 @@ public class EliminarCoche extends VentanaPadre {
 	}
 
 	/**
-	 * Muestra el coche.
-	 */
-	private void mostrarCoche() {
-		try {
-			Coche coche = General.concesionario.get(matriculaTxtField.getText());
-			matriculaTxtField.setText(coche.getMatricula());
-			if (coche.getColor().toString().equals("ROJO"))
-				rojoRButton.setSelected(true);
-			else if (coche.getColor().toString().equals("PLATA"))
-				plataRButton.setSelected(true);
-			else if (coche.getColor().toString().equals("AZUL")) {
-				azulRButton.setSelected(true);
-			}
-			marcaComboBox.addItem(coche.getModelo().getMarca());
-			marcaComboBox.setSelectedItem(coche.getModelo().getMarca());
-			modeloComboBox.addItem(coche.getModelo());
-			modeloComboBox.setSelectedItem(coche.getModelo());
-		} catch (MatriculaNoValidaException | CocheNoExisteException e1) {
-			JOptionPane.showMessageDialog(contentPanel, "El coche no se encuentra en el concesionario.", "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
-	/**
 	 * Elimina un coche del concesionario.
 	 */
 	private void eliminarCoche() {
 		try {
-			if (General.concesionario.eliminar(matriculaTxtField.getText())) {
-				JOptionPane.showMessageDialog(okButton, "Coche eliminado con éxito");
+			if (Gestion.concesionario.eliminar(matriculaTxtField.getText())) {
+				JOptionPane.showMessageDialog(button5, "Coche eliminado con éxito");
 				Gestion.setModificado(true);
 			} else
 				JOptionPane.showMessageDialog(contentPanel, "El coche no se encuentra en el concesionario.", "Error",
 						JOptionPane.ERROR_MESSAGE);
 		} catch (MatriculaNoValidaException | HeadlessException | CocheNoExisteException e1) {
-			JOptionPane.showMessageDialog(okButton, "El coche no se ha podido eliminar.", "Error",
+			JOptionPane.showMessageDialog(button5, "El coche no se ha podido eliminar.", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

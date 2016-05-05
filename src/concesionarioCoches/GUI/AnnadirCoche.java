@@ -10,6 +10,8 @@ import concesionarioCoches.excepciones.ModeloNoValidoException;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 /**
  * A&ntilde;ade un coche al concesionario con interfaz gr&aacute;fica.
@@ -27,20 +29,22 @@ public class AnnadirCoche extends VentanaPadre {
 	public AnnadirCoche() {
 		super();
 		setTitle("A\u00F1adir coche");
-		botonAnterior.setVisible(false);
-		botonSiguiente.setVisible(false);
-		okButton.addActionListener(new ActionListener() {
+		azulRButton.setSelected(true);
+		button1.setVisible(false);
+		button2.setVisible(false);
+		button4.setText("Atrás");
+		button5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				altaCoche();
 			}
 		});
-		btnLimpiar.addActionListener(new ActionListener() {
+		button3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				limpiarCampos();
 			}
 
 		});
-		cancelButton.addActionListener(new ActionListener() {
+		button4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				setVisible(false);
@@ -53,16 +57,24 @@ public class AnnadirCoche extends VentanaPadre {
 	 */
 	private void altaCoche() {
 		try {
-			if (General.concesionario.annadir(matriculaTxtField.getText(), getColorSeleccionado(),
+			if (Gestion.concesionario.annadir(matriculaTxtField.getText(), getColorSeleccionado(),
 					(Modelo) modeloComboBox.getSelectedItem())) {
-				JOptionPane.showMessageDialog(okButton, "Coche añadido con éxito");
+				JOptionPane.showMessageDialog(button5, "Coche añadido con éxito");
 				Gestion.setModificado(true);
 			}
-		} catch (HeadlessException | MatriculaNoValidaException | ColorNoValidoException | ModeloNoValidoException
-				| CocheYaExisteException e1) {
+		} catch (HeadlessException e) {
 			JOptionPane.showMessageDialog(contentPanel, "El coche no se ha podido añadir.", "Error",
 					JOptionPane.ERROR_MESSAGE);
+		} catch (MatriculaNoValidaException e) {
+			JOptionPane.showMessageDialog(contentPanel, "La matrícula no es válida.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (ColorNoValidoException e) {
+			JOptionPane.showMessageDialog(contentPanel, "El color no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (ModeloNoValidoException e) {
+			JOptionPane.showMessageDialog(contentPanel, "El modelo no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (CocheYaExisteException e) {
+			JOptionPane.showMessageDialog(contentPanel, "El coche ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-	}
 
+	}
 }

@@ -6,9 +6,11 @@ import concesionarioCoches.Colores;
 import concesionarioCoches.excepciones.CocheNoExisteException;
 import concesionarioCoches.excepciones.ColorNoValidoException;
 import concesionarioCoches.excepciones.MatriculaNoValidaException;
-
+import concesionarioCoches.Gestion;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 /**
  * Modifica el color del coche.
@@ -25,40 +27,34 @@ public class ModificarColorCoche extends VentanaPadre {
 	 */
 	public ModificarColorCoche() {
 		super();
+		azulRButton.setSelected(true);
+		matriculaTxtField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				try {
+					mostrarCoche(Gestion.concesionario.get(matriculaTxtField.getText()));
+				} catch (MatriculaNoValidaException e1) {
+					JOptionPane.showMessageDialog(getContentPane(), "La matrícula no es válida..", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} catch (CocheNoExisteException e1) {
+					JOptionPane.showMessageDialog(getContentPane(), "El coche no existe..", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		setTitle("Modificar color");
-		okButton.addActionListener(new ActionListener() {
+		button5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				modificarColorCoche();
 			}
-
 		});
-		btnLimpiar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mostrarCocheConcesionario();
-			}
-		});
-		okButton.setText("Modificar");
-		btnLimpiar.setText("Mostrar");
+		button5.setText("Modificar");
+		button3.setVisible(false);
 		marcaComboBox.setEnabled(false);
 		modeloComboBox.setEnabled(false);
-		botonAnterior.setVisible(false);
-		botonSiguiente.setVisible(false);
+		button1.setVisible(false);
+		button2.setVisible(false);
 
-	}
-
-	/**
-	 * Muestra el coche del concesionario por su matr&iacute;cula.
-	 */
-	private void mostrarCocheConcesionario() {
-		try {
-			Coche coche = General.concesionario.get(matriculaTxtField.getText());
-			mostrarCoche(coche);
-		} catch (MatriculaNoValidaException e1) {
-			JOptionPane.showMessageDialog(getContentPane(), "La matrícula no es válida..", "Error",
-					JOptionPane.ERROR_MESSAGE);
-		} catch (CocheNoExisteException e1) {
-			JOptionPane.showMessageDialog(getContentPane(), "El coche no existe..", "Error", JOptionPane.ERROR_MESSAGE);
-		}
 	}
 
 	/**
@@ -66,9 +62,9 @@ public class ModificarColorCoche extends VentanaPadre {
 	 */
 	private void modificarColorCoche() {
 		try {
-			Coche coche = General.concesionario.get(matriculaTxtField.getText());
+			Coche coche = Gestion.concesionario.get(matriculaTxtField.getText());
 			modificarColor(coche, getColorSeleccionado());
-			JOptionPane.showMessageDialog(okButton, "Color modificado con éxito.");
+			JOptionPane.showMessageDialog(button5, "Color modificado con éxito.");
 		} catch (MatriculaNoValidaException e1) {
 			JOptionPane.showMessageDialog(getContentPane(), "La matrícula no es válida..", "Error",
 					JOptionPane.ERROR_MESSAGE);

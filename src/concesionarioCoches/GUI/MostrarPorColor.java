@@ -26,6 +26,7 @@ import concesionarioCoches.excepciones.MatriculaNoValidaException;
 import concesionarioCoches.excepciones.ModeloNoValidoException;
 import concesionarioCoches.Coche;
 import concesionarioCoches.Colores;
+import concesionarioCoches.Gestion;
 
 /**
  * Muestra el concesionario por el color de los coches.
@@ -48,16 +49,16 @@ public class MostrarPorColor extends VentanaPadre {
 		super();
 		setTitle("Mostrar por color");
 		marcaComboBox.setSelectedIndex(-1);
-		btnLimpiar.setVisible(false);
-		okButton.setVisible(false);
+		button3.setVisible(false);
+		button5.setVisible(false);
 		matriculaTxtField.setEnabled(false);
 		matriculaTxtField.setEditable(false);
 		modeloComboBox.setEnabled(false);
 		marcaComboBox.setEnabled(false);
 		matriculaTxtField.setEnabled(false);
 		matriculaTxtField.setEditable(false);
-		botonSiguiente.setEnabled(false);
-		botonAnterior.setEnabled(false);
+		button2.setEnabled(false);
+		button1.setEnabled(false);
 		rojoRButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				mostrarCochesRojos();
@@ -74,13 +75,13 @@ public class MostrarPorColor extends VentanaPadre {
 				mostrarCochesPlata();
 			}
 		});
-		botonAnterior.addActionListener(new ActionListener() {
+		button1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mostrarAnterior();
 			}
 
 		});
-		botonSiguiente.addActionListener(new ActionListener() {
+		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				mostrarSiguiente();
 			}
@@ -120,7 +121,7 @@ public class MostrarPorColor extends VentanaPadre {
 	private void generarConcesionario(Colores color)
 			throws MatriculaNoValidaException, ColorNoValidoException, ModeloNoValidoException, CocheYaExisteException {
 		concesionarioColor = new Concesionario();
-		for (Coche coche : General.concesionario.almacen) {
+		for (Coche coche : Gestion.concesionario.almacen) {
 			if (coche.getColor().equals(color))
 				concesionarioColor.annadir(coche.getMatricula(), color, coche.getModelo());
 		}
@@ -135,8 +136,8 @@ public class MostrarPorColor extends VentanaPadre {
 			if (concesionarioColor.get(0) != null) {
 				mostrarCoche(concesionarioColor.get(indice));
 				comprobarTamanno(concesionarioColor);
-				botonSiguiente.setVisible(true);
-				botonAnterior.setVisible(true);
+				button2.setVisible(true);
+				button1.setVisible(true);
 			} else {
 				comprobarTamanno(concesionarioColor);
 				limpiarCampos();
@@ -157,8 +158,8 @@ public class MostrarPorColor extends VentanaPadre {
 			if (concesionarioColor.get(0) != null) {
 				mostrarCoche(concesionarioColor.get(indice));
 				comprobarTamanno(concesionarioColor);
-				botonSiguiente.setVisible(true);
-				botonAnterior.setVisible(true);
+				button2.setVisible(true);
+				button1.setVisible(true);
 			} else {
 				comprobarTamanno(concesionarioColor);
 				limpiarCampos();
@@ -179,8 +180,8 @@ public class MostrarPorColor extends VentanaPadre {
 			if (concesionarioColor.get(0) != null) {
 				mostrarCoche(concesionarioColor.get(indice));
 				comprobarTamanno(concesionarioColor);
-				botonSiguiente.setVisible(true);
-				botonAnterior.setVisible(true);
+				button2.setVisible(true);
+				button1.setVisible(true);
 			} else {
 				comprobarTamanno(concesionarioColor);
 				limpiarCampos();

@@ -66,7 +66,8 @@ public class Coche implements Serializable {
 	 * bbb, 0000 AAA</li>
 	 * </ol>
 	 */
-	static final private Pattern patternMatricula = Pattern.compile("^\\d{4}[ -]?[[B-Z]&&[^QEIOU]]{3}$");
+	static final private Pattern patternMatricula = Pattern.compile("^\\d{4}[ -]?[[B-Zb-z]&&[^QEIOUqeiou]]{3}$");
+
 	/**
 	 * Crea un nuevo Coche con los parámetros indicados
 	 * 
@@ -102,6 +103,7 @@ public class Coche implements Serializable {
 	public Coche(String matricula) throws MatriculaNoValidaException {
 		setMatricula(matricula);
 	}
+
 	/**
 	 * Indica si una matrícula es o no válida
 	 * 
@@ -124,9 +126,9 @@ public class Coche implements Serializable {
 	 * @see Coche#patternMatricula
 	 */
 	private void setMatricula(String matricula) throws MatriculaNoValidaException {
-		if (esValida(matricula))
-			this.matricula = estandarizarMatricula(matricula);
-		else
+		if (esValida(matricula)) {
+			this.matricula = estandarizarMatricula(matricula).toUpperCase();
+		} else
 			throw new MatriculaNoValidaException("La matrícula no es válida. ");
 	}
 

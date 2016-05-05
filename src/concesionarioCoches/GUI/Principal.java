@@ -37,6 +37,14 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
+/**
+ * La página principal tendrá como título el fichero abierto ("Sin título" en
+ * caso de no tener asociado ningún fichero). Será al estilo del Notepad.
+ * 
+ * @author Antonio Luque Bravo
+ * @version 1.0
+ *
+ */
 public class Principal extends JFrame {
 	/**
 	 * Ventana principal del programa.
@@ -204,12 +212,10 @@ public class Principal extends JFrame {
 			}
 		});
 		mnArchivo.add(mntmSalir);
-
 		mnConcesionario = new JMenu("Concesionario");
 		mnConcesionario.setMnemonic('C');
 		mnConcesionario.setIcon(new ImageIcon(Principal.class.getResource("/img/concesionario-menu.png")));
 		menuBar.add(mnConcesionario);
-
 		mntmAadirCoche = new JMenuItem("A\u00F1adir Coche");
 		mntmAadirCoche.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -222,8 +228,13 @@ public class Principal extends JFrame {
 
 		JMenuItem mntmEliminarCoche = new JMenuItem("Eliminar Coche");
 		mntmEliminarCoche.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
+				if (Gestion.concesionario.size() == 0) {
+					JOptionPane.showMessageDialog(contentPane, "No hay coches en el concesionario..", "Alerta",
+							JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				eliminarCoche.limpiarCampos();
 				eliminarCoche.setVisible(true);
 			}
 		});
@@ -234,13 +245,19 @@ public class Principal extends JFrame {
 		mntmContarCoches.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(mntmContarCoches,
-						"Número total de coches en el concesionario: " + General.concesionario.size());
+						"Número total de coches en el concesionario: " + Gestion.concesionario.size());
 			}
 		});
 
 		JMenuItem mntmModificarColorDe = new JMenuItem("Modificar Color de Coche");
 		mntmModificarColorDe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (Gestion.concesionario.size() == 0) {
+					JOptionPane.showMessageDialog(contentPane, "No hay coches en el concesionario..", "Alerta",
+							JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				modificarColorCoche.limpiarCampos();
 				modificarColorCoche.setVisible(true);
 			}
 		});
@@ -257,9 +274,9 @@ public class Principal extends JFrame {
 		JMenuItem mntmMostrarCoches = new JMenuItem("Mostrar Concesionario");
 		mntmMostrarCoches.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (General.concesionario.size() == 0) {
-					JOptionPane.showMessageDialog(contentPane, "No hay coches en el concesionario..", "Error",
-							JOptionPane.ERROR_MESSAGE);
+				if (Gestion.concesionario.size() == 0) {
+					JOptionPane.showMessageDialog(contentPane, "No hay coches en el concesionario..", "Alerta",
+							JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
 				mostrarConcesionario.actualizar();
@@ -272,11 +289,12 @@ public class Principal extends JFrame {
 		JMenuItem mntmMostrarCoche = new JMenuItem("Mostrar Coche");
 		mntmMostrarCoche.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (General.concesionario.size() == 0) {
-					JOptionPane.showMessageDialog(contentPane, "No hay coches en el concesionario..", "Error",
-							JOptionPane.ERROR_MESSAGE);
+				if (Gestion.concesionario.size() == 0) {
+					JOptionPane.showMessageDialog(contentPane, "No hay coches en el concesionario..", "Alerta",
+							JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
+				mostrarCoche.limpiarCampos();
 				mostrarCoche.setVisible(true);
 			}
 		});
@@ -285,11 +303,12 @@ public class Principal extends JFrame {
 		JMenuItem mntmMostrarCochesPorColor = new JMenuItem("Mostrar Coches por Color");
 		mntmMostrarCochesPorColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (General.concesionario.size() == 0) {
-					JOptionPane.showMessageDialog(contentPane, "No hay coches en el concesionario..", "Error",
-							JOptionPane.ERROR_MESSAGE);
+				if (Gestion.concesionario.size() == 0) {
+					JOptionPane.showMessageDialog(contentPane, "No hay coches en el concesionario..", "Alerta",
+							JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
+				mostrarCochesPorColor.limpiarCampos();
 				mostrarCochesPorColor.setVisible(true);
 			}
 		});
@@ -332,7 +351,7 @@ public class Principal extends JFrame {
 			if (opcion == JFileChooser.APPROVE_OPTION) {
 				file = guardar.getSelectedFile();
 				try {
-					Fichero.guardar(General.concesionario, file);
+					Fichero.guardar(Gestion.concesionario, file);
 				} catch (FileNotFoundException e1) {
 					JOptionPane.showMessageDialog(contentPane, "El archivo no se ha encontrado..", "Error",
 							JOptionPane.ERROR_MESSAGE);
@@ -363,7 +382,8 @@ public class Principal extends JFrame {
 				if (opcion == JFileChooser.APPROVE_OPTION) {
 					file = guardar.getSelectedFile();
 					try {
-						Fichero.guardar(General.concesionario, file);
+						Fichero.guardar(Gestion.concesionario, file);
+						Gestion.setModificado(false);
 					} catch (FileNotFoundException e1) {
 						JOptionPane.showMessageDialog(contentPane, "El archivo no se ha encontrado..", "Error",
 								JOptionPane.ERROR_MESSAGE);
@@ -376,9 +396,11 @@ public class Principal extends JFrame {
 			} else if (opcion == 2)
 				nuevo.setVisible(false);
 			else {
+				Gestion.setModificado(false);
 				reiniciarConcesionario();
 			}
 		} else {
+			Gestion.setModificado(false);
 			reiniciarConcesionario();
 		}
 	}
@@ -388,7 +410,7 @@ public class Principal extends JFrame {
 	 * de la ventana.
 	 */
 	private void reiniciarConcesionario() {
-		General.concesionario = new Concesionario();
+		Gestion.concesionario = new Concesionario();
 		setTitle("Sin Título - Concesionario IES Gran Capitán");
 	}
 
@@ -405,7 +427,8 @@ public class Principal extends JFrame {
 				if (opcion == JFileChooser.APPROVE_OPTION) {
 					file = guardar.getSelectedFile();
 					try {
-						Fichero.guardar(General.concesionario, file);
+						Fichero.guardar(Gestion.concesionario, file);
+						Gestion.setModificado(false);
 					} catch (FileNotFoundException e1) {
 						JOptionPane.showMessageDialog(contentPane, "El archivo no se ha encontrado..", "Error",
 								JOptionPane.ERROR_MESSAGE);
@@ -413,14 +436,17 @@ public class Principal extends JFrame {
 						JOptionPane.showMessageDialog(contentPane, "Error de Entrada/Salida..", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
-				} else if (opcion == JFileChooser.CANCEL_OPTION)
+				} else if (opcion == JFileChooser.CANCEL_OPTION) {
 					nuevo.setVisible(false);
+				}
 			} else if (opcion == 2)
 				nuevo.setVisible(false);
 			else {
+				Gestion.setModificado(false);
 				abrir();
 			}
 		} else {
+			Gestion.setModificado(false);
 			abrir();
 		}
 	}
@@ -435,8 +461,8 @@ public class Principal extends JFrame {
 		if (opcion == JFileChooser.APPROVE_OPTION) {
 			file = abrir.getSelectedFile();
 			try {
-				General.concesionario = (Concesionario) Fichero.abrir(file);
-				setTitle(file.getPath());
+				Gestion.concesionario = (Concesionario) Fichero.abrir(file);
+				setTitle(file.getName());
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(contentPane, "El archivo no se ha encontrado..", "Error",
 						JOptionPane.ERROR_MESSAGE);
@@ -462,8 +488,8 @@ public class Principal extends JFrame {
 			if (opcion == JFileChooser.APPROVE_OPTION) {
 				file = guardar.getSelectedFile();
 				try {
-					Fichero.guardar(General.concesionario, file);
-					this.setTitle(file.getPath());
+					Fichero.guardar(Gestion.concesionario, file);
+					setTitle(file.getName());
 				} catch (FileNotFoundException e1) {
 					JOptionPane.showMessageDialog(contentPane, "El archivo no se ha encontrado..", "Error",
 							JOptionPane.ERROR_MESSAGE);
@@ -477,7 +503,7 @@ public class Principal extends JFrame {
 				nuevo.setVisible(false);
 		} else
 			try {
-				Fichero.guardar(General.concesionario, file);
+				Fichero.guardar(Gestion.concesionario, file);
 				Gestion.setModificado(false);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(contentPane, "Error de Entrada/Salida..", "Error",
@@ -497,8 +523,8 @@ public class Principal extends JFrame {
 			file = guardarComo.getSelectedFile();
 			try {
 				if (deseaSobreescribir()) {
-					Fichero.guardar(General.concesionario, file);
-					this.setTitle(file.getName());
+					Fichero.guardar(Gestion.concesionario, file);
+					setTitle(file.getName());
 					Gestion.setModificado(false);
 				}
 			} catch (FileNotFoundException e1) {
@@ -543,7 +569,7 @@ public class Principal extends JFrame {
 				if (opcion == JFileChooser.APPROVE_OPTION) {
 					file = guardar.getSelectedFile();
 					try {
-						Fichero.guardar(General.concesionario, file);
+						Fichero.guardar(Gestion.concesionario, file);
 					} catch (FileNotFoundException e1) {
 						JOptionPane.showMessageDialog(contentPane, "El archivo no se ha encontrado..", "Error",
 								JOptionPane.ERROR_MESSAGE);

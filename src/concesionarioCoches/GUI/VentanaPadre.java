@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
@@ -27,6 +28,9 @@ import concesionarioCoches.Colores;
 import concesionarioCoches.Concesionario;
 import concesionarioCoches.Marca;
 import concesionarioCoches.Modelo;
+import concesionarioCoches.excepciones.CocheNoExisteException;
+import concesionarioCoches.excepciones.MatriculaNoValidaException;
+import concesionarioCoches.Gestion;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -77,15 +81,15 @@ public class VentanaPadre extends JDialog {
 	/**
 	 * Bot&oacute;n Aceptar.
 	 */
-	protected JButton okButton;
+	protected JButton button5;
 	/**
 	 * Bot&oacute; limpiar.
 	 */
-	protected JButton btnLimpiar;
+	protected JButton button3;
 	/**
 	 * Bot&oacute;n cancelar.
 	 */
-	protected JButton cancelButton;
+	protected JButton button4;
 	/**
 	 * Panel de botones.
 	 */
@@ -97,11 +101,11 @@ public class VentanaPadre extends JDialog {
 	/**
 	 * Bot&oacute;n para volver atr&aacute;s en el listado de coches.
 	 */
-	protected JButton botonAnterior;
+	protected JButton button1;
 	/**
 	 * Bot&oacute;n para avanzar en el listado de coches.
 	 */
-	protected JButton botonSiguiente;
+	protected JButton button2;
 	/**
 	 * &Iacute;ndice para el manejo del listado de coches.
 	 */
@@ -196,27 +200,27 @@ public class VentanaPadre extends JDialog {
 			buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			botonAnterior = new JButton("<");
-			botonSiguiente = new JButton(">");
-			buttonPane.add(botonAnterior);
-			buttonPane.add(botonSiguiente);
+			button1 = new JButton("<");
+			button2 = new JButton(">");
+			buttonPane.add(button1);
+			buttonPane.add(button2);
 			{
-				okButton = new JButton("Crear");
-				btnLimpiar = new JButton("Limpiar");
-				buttonPane.add(btnLimpiar);
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				button5 = new JButton("Crear");
+				button3 = new JButton("Limpiar");
+				buttonPane.add(button3);
+				button5.setActionCommand("OK");
+				buttonPane.add(button5);
+				getRootPane().setDefaultButton(button5);
 			}
 			{
-				cancelButton = new JButton("Cancelar");
-				cancelButton.addActionListener(new ActionListener() {
+				button4 = new JButton("Atr\u00E1s");
+				button4.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();
 					}
 				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+				button4.setActionCommand("Cancel");
+				buttonPane.add(button4);
 			}
 		}
 	}
@@ -225,7 +229,7 @@ public class VentanaPadre extends JDialog {
 	 * Comprueba si la matr&iacute;cula es valida, de ser asi la
 	 * colorear&aacute; de verde, de lo contrario de rojo.
 	 */
-	private void comprobarSiMatriculaValida() {
+	protected void comprobarSiMatriculaValida() {
 		if (Coche.esValida(matriculaTxtField.getText())) {
 			matriculaTxtField.setForeground(Color.GREEN);
 		} else
@@ -269,8 +273,8 @@ public class VentanaPadre extends JDialog {
 	 */
 	protected void actualizar() {
 		indice = 0;
-		mostrarCoche(General.concesionario.get(0));
-		comprobarTamanno(General.concesionario);
+		mostrarCoche(Gestion.concesionario.get(0));
+		comprobarTamanno(Gestion.concesionario);
 	}
 
 	/**
@@ -282,14 +286,14 @@ public class VentanaPadre extends JDialog {
 	 */
 	protected void comprobarTamanno(Concesionario concesionario) {
 		if (concesionario.get(indice + 1) != null)
-			botonSiguiente.setEnabled(true);
+			button2.setEnabled(true);
 		else
-			botonSiguiente.setEnabled(false);
+			button2.setEnabled(false);
 
 		if (concesionario.get(indice - 1) != null)
-			botonAnterior.setEnabled(true);
+			button1.setEnabled(true);
 		else
-			botonAnterior.setEnabled(false);
+			button1.setEnabled(false);
 	}
 
 	/**
@@ -299,8 +303,8 @@ public class VentanaPadre extends JDialog {
 	 *            Coche a mostrar.
 	 */
 	protected void mostrarCoche(Coche coche) {
-		if (General.concesionario.get(indice) == null) {
-			botonAnterior.setEnabled(false);
+		if (Gestion.concesionario.get(indice) == null) {
+			button1.setEnabled(false);
 			return;
 		}
 		matriculaTxtField.setText(coche.getMatricula());

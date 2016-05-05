@@ -27,6 +27,10 @@ import java.io.IOException;
  */
 public class Gestion {
 	/**
+	 * Concesionario de coches.
+	 */
+	public static Concesionario concesionario = new Concesionario();
+	/**
 	 * Bandera para saber si esta modificado o no.
 	 */
 	private static boolean modificado;

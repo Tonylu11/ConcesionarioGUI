@@ -2,6 +2,7 @@ package concesionarioCoches.GUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import concesionarioCoches.Gestion;
 
 /**
  * Muestra el concesionario.
@@ -26,16 +27,16 @@ public class MostrarConcesionario extends VentanaPadre {
 		marcaComboBox.setEnabled(false);
 		matriculaTxtField.setEnabled(false);
 		matriculaTxtField.setEditable(false);
-		btnLimpiar.setVisible(false);
-		okButton.setVisible(false);
+		button3.setVisible(false);
+		button5.setVisible(false);
 
-		botonAnterior.addActionListener(new ActionListener() {
+		button1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cocheAnterior();
 			}
 
 		});
-		botonSiguiente.addActionListener(new ActionListener() {
+		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				cocheSiguiente();
 			}
@@ -46,16 +47,16 @@ public class MostrarConcesionario extends VentanaPadre {
 	 * Muestra el coche siguiente.
 	 */
 	private void cocheSiguiente() {
-		mostrarCoche(General.concesionario.get(++indice));
-		comprobarTamanno(General.concesionario);
+		mostrarCoche(Gestion.concesionario.get(++indice));
+		comprobarTamanno(Gestion.concesionario);
 	}
 
 	/**
 	 * Muestra el coche anterior.
 	 */
 	private void cocheAnterior() {
-		mostrarCoche(General.concesionario.get(--indice));
-		comprobarTamanno(General.concesionario);
+		mostrarCoche(Gestion.concesionario.get(--indice));
+		comprobarTamanno(Gestion.concesionario);
 	}
 
 }
