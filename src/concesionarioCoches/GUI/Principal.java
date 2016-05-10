@@ -361,10 +361,12 @@ public class Principal extends JFrame {
 				}
 			} else if (opcion == JFileChooser.CANCEL_OPTION)
 				nuevo.setVisible(false);
-		} else if (opcion == 2) {
+		} else if (opcion == 1)
+			System.exit(0);
+		else if (opcion == 2) {
 			nuevo.setVisible(false);
 		} else
-			System.exit(0);
+			nuevo.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
 	/**
@@ -393,10 +395,12 @@ public class Principal extends JFrame {
 					}
 				} else if (opcion == JFileChooser.CANCEL_OPTION)
 					nuevo.setVisible(false);
-			} else if (opcion == 2)
+			} else if (opcion == 1)
+				System.exit(0);
+			else if (opcion == 2)
 				nuevo.setVisible(false);
 			else {
-				Gestion.setModificado(false);
+				nuevo.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 				reiniciarConcesionario();
 			}
 		} else {
@@ -439,10 +443,12 @@ public class Principal extends JFrame {
 				} else if (opcion == JFileChooser.CANCEL_OPTION) {
 					nuevo.setVisible(false);
 				}
-			} else if (opcion == 2)
+			} else if (opcion == 1)
+				System.exit(0);
+			else if (opcion == 2)
 				nuevo.setVisible(false);
 			else {
-				Gestion.setModificado(false);
+				nuevo.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 				abrir();
 			}
 		} else {
@@ -579,10 +585,14 @@ public class Principal extends JFrame {
 					}
 				} else if (opcion == JFileChooser.CANCEL_OPTION)
 					nuevo.setVisible(false);
-			} else if (opcion == 2)
+			} else if (opcion == 1)
+				System.exit(0);
+			else if (opcion == 2) {
 				nuevo.setVisible(false);
-			else
+			} else {
+				nuevo.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 				nuevo.setVisible(false);
+			}
 		} else
 			System.exit(0);
 	}
