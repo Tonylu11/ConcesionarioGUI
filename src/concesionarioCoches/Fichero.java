@@ -50,8 +50,8 @@ public class Fichero {
 
 	public static File annadirExtension(File archivo) {
 		String extension = archivo.getPath();
-		if (!extension.endsWith(".elemethium"))
-			return new File(archivo + ".elementhium");
+		if (!extension.endsWith(".obj"))
+			return new File(archivo + ".obj");
 		return archivo;
 	}
 
